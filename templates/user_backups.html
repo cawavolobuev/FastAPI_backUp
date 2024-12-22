@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Backups</title>
+</head>
+<body>
+    <h1>Backups for {{ user.username }}</h1>
+    <ul>
+        {% for backup in backups %}
+        <li>{{ backup }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to Admin Panel</a>
+</body>
+</html>
