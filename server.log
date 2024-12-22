@@ -176,3 +176,10 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-12-22 16:28:41,637 - INFO - Контрольная сумма файла Шпаргалка.Основы_визуализации_данных.pdf: caa0b26fa850a606a206370f86cd1cca427cd837b728156bf1c1afa34cf83bdf
 2024-12-22 16:28:41,638 - INFO - Файл Шпаргалка.Основы_визуализации_данных.pdf успешно сохранён
 2024-12-22 16:29:26,590 - INFO - Файл Шпаргалка.Основы_визуализации_данных.pdf отправлен пользователю test
+2024-12-22 22:34:06,802 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-12-22 22:34:07,054 - INFO - Пользователь 1234 успешно зарегистрирован

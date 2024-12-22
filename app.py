@@ -11,11 +11,15 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from typing import List, Optional
 from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.serialization import load_pem_public_key
+
 from starlette.responses import FileResponse
 from datetime import datetime, timedelta
 from hashlib import sha256
+#from models import License, User
+#from schemas import LicenseCreate, LicenseResponse
 import uuid
 
 
@@ -70,21 +74,19 @@ class User(Base):
     hashed_password = Column(String)
     encryption_key = Column(String)  # Уникальный ключ шифрования
     backups = relationship("Backup", back_populates="user")
-
+    licenses = relationship("License", back_populates="user")
 
 class License(Base):
     __tablename__ = "licenses"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    license_type = Column(String, nullable=False)  # "activation_key" или "digital_signature"
-    license_key = Column(String, unique=True, nullable=True)  # Только для ключей активации
-    signature = Column(LargeBinary, nullable=True)  # Только для цифровых лицензий
-    expires_at = Column(DateTime, nullable=True)
-    is_active = Column(Boolean, default=True)
+    key = Column(String, unique=True, nullable=False)  # Ключ активации
+    is_active = Column(Boolean, default=False)  # Статус активации
+    license_data = Column(String, nullable=True)  # Данные цифровой лицензии
+    signature = Column(String, nullable=True)  # Подпись цифровой лицензии
+    user_id = Column(Integer, ForeignKey("users.id"))  # Привязка к пользователю
 
     user = relationship("User", back_populates="licenses")
-
 
 
 Base.metadata.create_all(bind=engine)
@@ -94,6 +96,19 @@ class UserCreate(BaseModel):
     username: str
     password: str
 
+class LicenseCreate(BaseModel):
+    key: str
+
+class LicenseResponse(BaseModel):
+    id: int
+    key: str
+    is_active: bool
+    user_id: int | None = None
+
+    class Config:
+        orm_mode = True
+
+
 # Вспомогательные функции
 def get_db():
     db = SessionLocal()
@@ -102,7 +117,7 @@ def get_db():
     finally:
         db.close()
 
-
+"""
 def generate_activation_key() -> str:
     return str(uuid.uuid4()).replace("-", "").upper()[:16]
 
@@ -152,9 +167,7 @@ def check_license(
     license_data: Optional[str] = None,
     signature: Optional[str] = None,
 ) -> str:
-    """
-    Проверяет лицензию пользователя.
-    """
+   
     if license_key and check_activation_key(current_user.id, license_key, db):
         return "activation_key"
 
@@ -162,7 +175,7 @@ def check_license(
         return "digital_signature"
 
     raise HTTPException(status_code=403, detail="Лицензия недействительна или истекла")
-
+"""
 
 def get_password_hash(password: str):
     return pwd_context.hash(password)
@@ -201,6 +214,59 @@ templates = Jinja2Templates(directory="templates")
 def admin_panel(request: Request, db: Session = Depends(get_db)):
     users = db.query(User).all()
     return templates.TemplateResponse("admin.html", {"request": request, "users": users})
+
+@app.post("/licenses/activation-key", response_model=LicenseResponse)
+def activate_license(key: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Активировать ключ активации."""
+    license_entry = db.query(License).filter(License.key == key).first()
+    if not license_entry:
+        raise HTTPException(status_code=400, detail="Неверный ключ активации")
+
+    if license_entry.is_active:
+        raise HTTPException(status_code=400, detail="Лицензия уже активирована")
+
+    # Активируем лицензию
+    license_entry.is_active = True
+    license_entry.user_id = current_user.id
+    db.commit()
+    db.refresh(license_entry)
+
+    return LicenseResponse(
+        id=license_entry.id,
+        key=license_entry.key,
+        is_active=license_entry.is_active,
+        user_id=license_entry.user_id,
+    )
+
+@app.post("/licenses/generate", response_model=LicenseResponse)
+def generate_license(db: Session = Depends(get_db)):
+    """Генерация нового ключа активации."""
+    key = str(uuid.uuid4())  # Генерация уникального ключа
+    new_license = License(key=key, is_active=False)
+    db.add(new_license)
+    db.commit()
+    db.refresh(new_license)
+    return LicenseResponse(
+        id=new_license.id,
+        key=new_license.key,
+        is_active=new_license.is_active,
+    )
+
+
+@app.post("/licenses/verify")
+def verify_license(license_data: str, signature: str, public_key: str):
+    """Проверить цифровую подпись лицензии."""
+    try:
+        public_key_obj = load_pem_public_key(public_key.encode())
+        public_key_obj.verify(
+            signature.encode(),
+            license_data.encode(),
+            padding.PKCS1v15(),
+            hashes.SHA256()
+        )
+        return {"valid": True}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Недействительная цифровая подпись")
 
 
 @app.get("/user/{user_id}", response_class=HTMLResponse)
@@ -247,16 +313,17 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 
 
 @app.post("/backups/upload")
-async def upload_backup(
-    files: List[UploadFile] = File(...),
-    current_user: User = Depends(get_current_user),
-    db: SessionLocal = Depends(get_db),
-    license_key: str = Header(None),
-    license_data: str = Header(None),
-    signature: str = Header(None),
-):
-    license_type = check_license(current_user, db, license_key, license_data, signature)
-    logger.info(f"Пользователь {current_user.username} использует лицензию типа {license_type}")
+async def upload_backup(files: List[UploadFile], current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Загрузка файлов с проверкой лицензии."""
+    active_license = db.query(License).filter(License.user_id == current_user.id, License.is_active == True).first()
+    if not active_license:
+        raise HTTPException(status_code=403, detail="Нет активной лицензии")
+
+    # Проверка цифровой лицензии
+    if active_license.license_data and active_license.signature:
+        public_key = ...  # Загрузить открытый ключ сервера
+        verify_license(active_license.license_data, active_license.signature, public_key)
+
 
     user_dir = get_user_backup_dir(current_user.id)
     saved_files = []
