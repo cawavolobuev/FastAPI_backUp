@@ -1,9 +1,10 @@
 import os
 import logging
+import base64
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Request, Header
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey, Boolean, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, declarative_base, relationship
@@ -13,8 +14,7 @@ from typing import List, Optional
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.serialization import load_pem_public_key
-
+from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
 from starlette.responses import FileResponse
 from datetime import datetime, timedelta
 from hashlib import sha256
@@ -117,6 +117,7 @@ def get_db():
     finally:
         db.close()
 
+
 """
 def generate_activation_key() -> str:
     return str(uuid.uuid4()).replace("-", "").upper()[:16]
@@ -206,6 +207,27 @@ def get_user_backup_dir(user_id: int):
     os.makedirs(user_dir, exist_ok=True)
     return user_dir
 
+def sign_license(data: str, private_key_path: str) -> str:
+    """
+    Подписать данные лицензии с использованием приватного ключа.
+
+    :param data: Строка данных лицензии.
+    :param private_key_path: Путь к приватному ключу в формате PEM.
+    :return: Подпись в виде строки Base64.
+    """
+    with open(private_key_path, "rb") as f:
+        private_key = load_pem_private_key(f.read(), password=None)
+
+    signature = private_key.sign(
+        data.encode(),
+        padding.PKCS1v15(),
+        hashes.SHA256()
+    )
+
+    return base64.b64encode(signature).decode()
+
+
+
 # Маршруты
 templates = Jinja2Templates(directory="templates")
 
@@ -239,10 +261,10 @@ def activate_license(key: str, db: Session = Depends(get_db), current_user: User
     )
 
 @app.post("/licenses/generate", response_model=LicenseResponse)
-def generate_license(db: Session = Depends(get_db)):
-    """Генерация нового ключа активации."""
+def generate_license(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Генерация нового ключа активации для текущего пользователя."""
     key = str(uuid.uuid4())  # Генерация уникального ключа
-    new_license = License(key=key, is_active=False)
+    new_license = License(key=key, is_active=False, user_id=current_user.id)
     db.add(new_license)
     db.commit()
     db.refresh(new_license)
@@ -250,16 +272,48 @@ def generate_license(db: Session = Depends(get_db)):
         id=new_license.id,
         key=new_license.key,
         is_active=new_license.is_active,
+        user_id=new_license.user_id,
+    )
+
+@app.get("/licenses/download")
+def download_license(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Скачать файл лицензии для текущего пользователя."""
+    # Получение активной лицензии пользователя
+    license_entry = db.query(License).filter(
+        License.user_id == current_user.id,
+        License.is_active == True
+    ).first()
+
+    if not license_entry:
+        raise HTTPException(status_code=404, detail="Активная лицензия не найдена")
+
+    # Формирование данных лицензии
+    license_data = f"USER:{current_user.id};LICENSE:{license_entry.key}"
+
+    # Подпись лицензии
+    signature = sign_license(license_data, "private_key.pem")
+
+    # Формирование содержимого файла
+    license_file_content = f"{license_data}\n{signature}"
+
+    # Возврат файла в ответе
+    return Response(
+        content=license_file_content,
+        media_type="text/plain",
+        headers={"Content-Disposition": f"attachment; filename=license_{current_user.id}.lic"}
     )
 
 
 @app.post("/licenses/verify")
-def verify_license(license_data: str, signature: str, public_key: str):
+def verify_license(license_data: str, signature: str):
     """Проверить цифровую подпись лицензии."""
     try:
-        public_key_obj = load_pem_public_key(public_key.encode())
+        # Загрузка публичного ключа с сервера
+        with open("public_key.pem", "rb") as f:
+            public_key_obj = load_pem_public_key(f.read())
+
         public_key_obj.verify(
-            signature.encode(),
+            base64.b64decode(signature.encode()),
             license_data.encode(),
             padding.PKCS1v15(),
             hashes.SHA256()
@@ -267,7 +321,6 @@ def verify_license(license_data: str, signature: str, public_key: str):
         return {"valid": True}
     except Exception as e:
         raise HTTPException(status_code=400, detail="Недействительная цифровая подпись")
-
 
 @app.get("/user/{user_id}", response_class=HTMLResponse)
 def user_backups(user_id: int, request: Request, db: Session = Depends(get_db)):

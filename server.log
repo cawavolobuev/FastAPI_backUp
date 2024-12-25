@@ -150,7 +150,7 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-12-22 16:16:42,805 - INFO - Получен файл Шпаргалка.Основы_визуализации_данных.pdf, размер: 962828 байт
 2024-12-22 16:16:42,806 - INFO - Контрольная сумма файла Шпаргалка.Основы_визуализации_данных.pdf: 34891b0f4a2573cd3ba5bbe3d40b433242d41f8d9e2617d042d220bd35da3eb7
 2024-12-22 16:16:42,806 - WARNING - Файл Шпаргалка.Основы_визуализации_данных.pdf уже существует
-2024-12-22 16:16:42,806 - ERROR - Ошибка при обработке файла Шпаргалка.Основы_визуализации_данных.pdf: 400: Файл Шпаргалка.Основы_визуализации_данных.pdf уже существует
+
 2024-12-22 16:20:10,693 - WARNING - (trapped) error reading bcrypt version
 Traceback (most recent call last):
   File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
@@ -183,3 +183,37 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^^^
 AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-12-22 22:34:07,054 - INFO - Пользователь 1234 успешно зарегистрирован
+2024-12-25 15:02:48,632 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-12-25 15:12:32,466 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-12-25 15:12:32,715 - INFO - Пользователь test успешно зарегистрирован
+2024-12-25 15:32:11,916 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-12-25 15:32:12,152 - INFO - Пользователь 1245 успешно зарегистрирован
+2024-12-25 15:44:57,380 - INFO - Получен файл ФБО ОЗОН4 (1).xlsx, размер: 10301 байт
+2024-12-25 15:44:57,381 - INFO - Контрольная сумма файла ФБО ОЗОН4 (1).xlsx: 22623b4883b4534c540d4b8ce94f83540a594ac61b7dd45d23ed349ba29ad594
+2024-12-25 15:44:57,381 - INFO - Файл ФБО ОЗОН4 (1).xlsx успешно сохранён
+2024-12-25 19:03:07,899 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-12-25 19:16:51,406 - INFO - Пользователь testuser успешно зарегистрирован
+2024-12-25 19:41:09,500 - INFO - Получен файл лекция - 1.pdf, размер: 143909 байт
+2024-12-25 19:41:09,507 - INFO - Контрольная сумма файла лекция - 1.pdf: 3b7b5ca76d7e89ae4f4e0856f42b1a890870598ee47163dd7a1689faff3b5e30
+2024-12-25 19:41:09,508 - INFO - Файл лекция - 1.pdf успешно сохранён
+2024-12-25 19:47:47,605 - WARNING - Попытка регистрации с уже существующим именем пользователя: testuser
