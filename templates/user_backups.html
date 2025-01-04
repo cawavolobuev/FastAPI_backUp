@@ -1,15 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>User Backups</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резервные копии</title>
 </head>
 <body>
-    <h1>Backups for {{ user.username }}</h1>
-    <ul>
-        {% for backup in backups %}
-        <li>{{ backup }}</li>
-        {% endfor %}
-    </ul>
-    <a href="/">Back to Admin Panel</a>
+    <h1>Резервные копии пользователя: {{ user.username }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата создания</th>
+                <th>Имя файла</th>
+                <th>Размер</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for backup in backups %}
+            <tr>
+                <td>{{ backup.created_at }}</td>
+                <td>{{ backup.filename }}</td>
+                <td>{{ backup.size }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

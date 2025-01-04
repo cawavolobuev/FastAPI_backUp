@@ -1,7 +1,7 @@
 import os
 import logging
 import base64
-from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Request, Header
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Request, Header, Body
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, Response
@@ -21,7 +21,7 @@ from hashlib import sha256
 #from models import License, User
 #from schemas import LicenseCreate, LicenseResponse
 import uuid
-
+from fastapi.staticfiles import StaticFiles
 
 # Настройка логирования
 logging.basicConfig(
@@ -52,6 +52,8 @@ app = FastAPI()
 # Константы
 BACKUP_DIR = "./backups"  # Основная папка для хранения резервных копий
 os.makedirs(BACKUP_DIR, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Определение моделей базы данных
 class Backup(Base):
@@ -88,6 +90,8 @@ class License(Base):
 
     user = relationship("User", back_populates="licenses")
 
+class LicenseActivationRequest(BaseModel):
+    key: str
 
 Base.metadata.create_all(bind=engine)
 
@@ -238,9 +242,9 @@ def admin_panel(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("admin.html", {"request": request, "users": users})
 
 @app.post("/licenses/activation-key", response_model=LicenseResponse)
-def activate_license(key: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def activate_license(request: LicenseActivationRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Активировать ключ активации."""
-    license_entry = db.query(License).filter(License.key == key).first()
+    license_entry = db.query(License).filter(License.key == request.key).first()
     if not license_entry:
         raise HTTPException(status_code=400, detail="Неверный ключ активации")
 

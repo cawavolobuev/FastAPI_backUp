@@ -4,6 +4,7 @@ import requests
 import json
 import os
 import logging
+from cryptography.fernet import Fernet
 
 # Настройка логирования
 logging.basicConfig(
@@ -11,12 +12,13 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.FileHandler("client.log"),  # Логирование в файл
-        logging.StreamHandler(),           # Логирование в консоль
+        logging.StreamHandler(),  # Логирование в консоль
     ],
 )
 logger = logging.getLogger("BackupClient")
 
 CONFIG_FILE = "config.json"
+
 
 def load_config():
     """Загрузка конфигурации."""
@@ -25,10 +27,12 @@ def load_config():
             return json.load(f)
     return {}
 
+
 def save_config(config):
     """Сохранение конфигурации."""
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=4)
+
 
 class Application(tk.Tk):
     def __init__(self):
@@ -64,8 +68,10 @@ class Application(tk.Tk):
         frame.tkraise()
         logger.info(f"Переход на страницу: {page_name}")
 
+
 class RegisterPage(tk.Frame):
     """Страница регистрации."""
+
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -87,7 +93,8 @@ class RegisterPage(tk.Frame):
         username = self.username_entry.get()
         password = self.password_entry.get()
         try:
-            response = requests.post(f"http://127.0.0.1:8000/register", json={"username": username, "password": password})
+            response = requests.post(f"http://127.0.0.1:8000/register",
+                                     json={"username": username, "password": password})
             response.raise_for_status()
             messagebox.showinfo("Успех", "Регистрация выполнена!")
             logger.info(f"Регистрация пользователя {username} выполнена успешно")
@@ -96,10 +103,13 @@ class RegisterPage(tk.Frame):
             logger.error(f"Ошибка регистрации пользователя {username}: {e}")
             messagebox.showerror("Ошибка", f"Ошибка регистрации: {e}")
 
+
 class LoginPage(tk.Frame):
     """Страница входа."""
+
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.encryption_key = None
         self.controller = controller
 
         tk.Label(self, text="Вход в систему", font=("Arial", 16)).pack(pady=10)
@@ -123,6 +133,7 @@ class LoginPage(tk.Frame):
             response.raise_for_status()
             data = response.json()
             self.controller.token = data["access_token"]
+            self.controller.encryption_key = data["encryption_key"]
             messagebox.showinfo("Успех", "Вход выполнен успешно!")
             logger.info(f"Пользователь {username} вошёл в систему")
             self.controller.show_frame("LicensePage")
@@ -130,8 +141,10 @@ class LoginPage(tk.Frame):
             logger.error(f"Ошибка входа пользователя {username}: {e}")
             messagebox.showerror("Ошибка", f"Ошибка входа: {e}")
 
+
 class LicensePage(tk.Frame):
     """Страница активации лицензии."""
+
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -143,7 +156,8 @@ class LicensePage(tk.Frame):
         self.license_entry.pack()
 
         tk.Button(self, text="Активировать", command=self.activate_license).pack(pady=10)
-        tk.Button(self, text="Запросить лицензию", command=lambda: controller.show_frame("LicenseRequestPage")).pack(pady=5)
+        tk.Button(self, text="Запросить лицензию", command=lambda: controller.show_frame("LicenseRequestPage")).pack(
+            pady=5)
         tk.Button(self, text="Перейти к главной", command=lambda: controller.show_frame("MainPage")).pack()
 
     def activate_license(self):
@@ -155,7 +169,10 @@ class LicensePage(tk.Frame):
 
         headers = {"Authorization": f"Bearer {self.controller.token}"}
         try:
-            response = requests.post(f"http://127.0.0.1:8000/licenses/activation-key", headers=headers, json={"key": license_key})
+            response = requests.post(f"http://127.0.0.1:8000/licenses/activation-key", headers=headers,
+                                     json={"key": license_key})
+            print(response.content)
+            print(response.json())
             response.raise_for_status()
             self.controller.license_key = license_key
             messagebox.showinfo("Успех", "Лицензия активирована!")
@@ -164,8 +181,10 @@ class LicensePage(tk.Frame):
             logger.error(f"Ошибка активации лицензии: {e}")
             messagebox.showerror("Ошибка", f"Ошибка активации лицензии: {e}")
 
+
 class LicenseRequestPage(tk.Frame):
     """Страница получения лицензии или цифровой подписи."""
+
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -207,8 +226,10 @@ class LicenseRequestPage(tk.Frame):
             logger.error(f"Ошибка скачивания файла лицензии: {e}")
             messagebox.showerror("Ошибка", f"Ошибка скачивания файла лицензии: {e}")
 
+
 class MainPage(tk.Frame):
     """Главная страница."""
+
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -218,14 +239,49 @@ class MainPage(tk.Frame):
         tk.Button(self, text="Выбрать файл для загрузки", command=self.upload_file).pack(pady=5)
         tk.Button(self, text="Показать резервные копии", command=self.list_backups).pack(pady=5)
 
+        # Список резервных копий
+        self.backup_listbox = tk.Listbox(self, height=10, width=50)
+        self.backup_listbox.pack(pady=10)
+
+        # Кнопка для скачивания выбранной резервной копии
+        tk.Button(self, text="Скачать выбранную резервную копию", command=self.download_backup).pack(pady=5)
+
+        self.backups = []  # Список резервных копий с сервера
+
+    def encrypt_file(self, file_path, key):
+        """Шифрование файла перед отправкой на сервер."""
+        cipher = Fernet(key)
+        with open(file_path, 'rb') as f:
+            encrypted_data = cipher.encrypt(f.read())
+        encrypted_file_path = file_path + ".enc"
+        with open(encrypted_file_path, 'wb') as f:
+            f.write(encrypted_data)
+        return encrypted_file_path
+
+    def decrypt_file(self, file_path, key):
+        """Расшифровка файла после загрузки."""
+        cipher = Fernet(key)
+        with open(file_path, 'rb') as f:
+            decrypted_data = cipher.decrypt(f.read())
+        with open(file_path[:-4], 'wb') as f:
+            f.write(decrypted_data)
+        os.remove(file_path)
+
     def upload_file(self):
+        """Загрузка файла на сервер с шифрованием."""
         file_path = filedialog.askopenfilename()
         if not file_path:
             logger.warning("Попытка загрузки файла без выбора файла")
             return
 
+        if not self.controller.encryption_key:
+            logger.error("Отсутствует ключ шифрования")
+            messagebox.showerror("Ошибка", "Не удалось загрузить файл: отсутствует ключ шифрования")
+            return
+
         headers = {"Authorization": f"Bearer {self.controller.token}"}
         try:
+            file_path = self.encrypt_file(file_path, self.controller.encryption_key)
             with open(file_path, "rb") as f:
                 file_data = f.read()
             files = {"files": (os.path.basename(file_path), file_data)}
@@ -238,17 +294,54 @@ class MainPage(tk.Frame):
             messagebox.showerror("Ошибка", f"Ошибка загрузки файла: {e}")
 
     def list_backups(self):
+        """Получение списка резервных копий с сервера."""
         headers = {"Authorization": f"Bearer {self.controller.token}"}
         try:
             response = requests.get(f"http://127.0.0.1:8000/backups", headers=headers)
             response.raise_for_status()
-            backups = response.json()
+            self.backups = response.json()  # Ожидается, что сервер возвращает список резервных копий
             logger.info("Список резервных копий успешно получен")
-            for backup in backups:
-                print(backup["filename"])
+
+            # Очистка и обновление списка
+            self.backup_listbox.delete(0, tk.END)
+            for backup in self.backups:
+                self.backup_listbox.insert(tk.END, backup["filename"])
         except requests.RequestException as e:
             logger.error(f"Ошибка получения списка резервных копий: {e}")
             messagebox.showerror("Ошибка", f"Ошибка получения списка: {e}")
+
+    def download_backup(self):
+        """Скачивание и расшифровка выбранной резервной копии."""
+        selected_index = self.backup_listbox.curselection()
+        if not selected_index:
+            messagebox.showwarning("Предупреждение", "Выберите резервную копию для скачивания")
+            return
+
+        selected_filename = self.backups[selected_index[0]]["filename"]
+        headers = {"Authorization": f"Bearer {self.controller.token}"}
+
+        try:
+            # Запрос на скачивание файла
+            response = requests.get(f"http://127.0.0.1:8000/backups/download/{selected_filename}", headers=headers)
+            response.raise_for_status()
+
+            # Выбор места сохранения файла
+            save_path = filedialog.asksaveasfilename(initialfile=selected_filename)
+            if save_path:
+                with open(save_path, "wb") as f:
+                    f.write(response.content)
+
+                # Расшифровка файла
+                self.decrypt_file(save_path, self.controller.encryption_key)
+                messagebox.showinfo("Успех", f"Файл {selected_filename} успешно загружен и расшифрован!")
+                logger.info(f"Файл {selected_filename} успешно загружен и расшифрован")
+        except requests.RequestException as e:
+            logger.error(f"Ошибка скачивания файла {selected_filename}: {e}")
+            messagebox.showerror("Ошибка", f"Ошибка скачивания файла: {e}")
+        except Exception as e:
+            logger.error(f"Ошибка расшифровки файла {selected_filename}: {e}")
+            messagebox.showerror("Ошибка", f"Ошибка расшифровки файла: {e}")
+
 
 if __name__ == "__main__":
     app = Application()

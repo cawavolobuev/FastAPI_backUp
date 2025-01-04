@@ -1,0 +1,177 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+}
+
+.auth-form, .dashboard {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.auth-form h2, .dashboard h2 {
+    margin-bottom: 20px;
+}
+
+.dashboard {
+    width: 400px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.dashboard .section {
+    margin-bottom: 20px;
+}
+
+.dashboard .section h3 {
+    margin-bottom: 10px;
+}
+
+.users-display {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 10;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 5;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+#licenseButton, #register-modal-button {
+    margin-bottom: 20px;
+}
+.download, .generate, .activate {
+    margin-bottom: 20px;
+}
+.register {
+    margin-bottom: 20px; 
+}
+.clickable-user {
+    color: #007BFF;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
+
+.clickable-user:hover {
+    color: #0056b3;
+}
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 10;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 5;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+
+#licenseButton {
+    margin-top: 20px;
+}
+.license-actions button {
+    margin: 5px 0;
+}
+.users-display {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+    text-align: left;
+}
+    .hidden {
+    display: none;
+}

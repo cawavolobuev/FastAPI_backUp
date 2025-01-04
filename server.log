@@ -217,3 +217,115 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-12-25 19:41:09,507 - INFO - Контрольная сумма файла лекция - 1.pdf: 3b7b5ca76d7e89ae4f4e0856f42b1a890870598ee47163dd7a1689faff3b5e30
 2024-12-25 19:41:09,508 - INFO - Файл лекция - 1.pdf успешно сохранён
 2024-12-25 19:47:47,605 - WARNING - Попытка регистрации с уже существующим именем пользователя: testuser
+2025-01-03 14:50:18,298 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 14:50:45,297 - INFO - Получен файл gitignore, размер: 514 байт
+2025-01-03 14:50:45,298 - INFO - Контрольная сумма файла gitignore: 32b1f6e40eec271328ae38ab9aa92fe7eb12399512d8b2eee4d2ea35d431db16
+2025-01-03 14:50:45,298 - INFO - Файл gitignore успешно сохранён
+2025-01-03 14:52:02,067 - INFO - Пользователь user123 успешно зарегистрирован
+2025-01-03 14:58:30,329 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 15:05:07,611 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 15:11:45,930 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 16:06:59,744 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 16:07:56,621 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 16:09:42,347 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 16:10:18,334 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 16:10:25,522 - INFO - Получен файл README.md, размер: 13 байт
+2025-01-03 16:10:25,522 - INFO - Контрольная сумма файла README.md: 0cc0022c2134b7e0a5b9b12dfd00ca77936b0c2fafb08e7bdb914b5672f6501a
+2025-01-03 16:10:25,522 - INFO - Файл README.md успешно сохранён
+2025-01-03 16:26:25,528 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:01:33,519 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:01:43,428 - INFO - Получен файл Syllabus.pdf, размер: 5885630 байт
+2025-01-03 17:01:43,430 - INFO - Контрольная сумма файла Syllabus.pdf: 685730967a115521dbcaf6bfcea5f948dd9d93baf761f13a72f2449499f074b9
+2025-01-03 17:01:43,432 - INFO - Файл Syllabus.pdf успешно сохранён
+2025-01-03 17:04:31,843 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:05:28,040 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:08:52,801 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:11:10,455 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:11:26,167 - INFO - Получен файл Syllabus.pdf.enc, размер: 7847588 байт
+2025-01-03 17:11:26,172 - INFO - Контрольная сумма файла Syllabus.pdf.enc: 5671a7510ba8abd96728fef82819992972df631cc61dc5af91c53a4f243f4838
+2025-01-03 17:11:26,173 - INFO - Файл Syllabus.pdf.enc успешно сохранён
+2025-01-03 17:19:07,474 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 17:19:17,100 - INFO - Файл Syllabus.pdf.enc отправлен пользователю user123
+2025-01-03 19:43:59,338 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-03 19:43:59,588 - INFO - Пользователь 123 успешно зарегистрирован
+2025-01-03 19:54:03,193 - INFO - Пользователь 888 успешно зарегистрирован
