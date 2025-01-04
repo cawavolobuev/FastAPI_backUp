@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
-    <body>
-        <!-- Authorization Section -->
-        <div id="auth-section" class="auth-form">
-            <h2>Авторизация</h2>
-            <label for="login">Логин:</label>
-            <input type="text" id="login" placeholder="Введите ваш логин">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<body>
+<!-- Authorization Section -->
+<div id="auth-section" class="auth-form">
+    <h2>Авторизация</h2>
+    <label for="login">Логин:</label>
+    <input type="text" id="login" placeholder="Введите ваш логин">
 
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" placeholder="Введите ваш пароль">
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" placeholder="Введите ваш пароль">
 
-            <button id="loginButton">Войти</button>
-        </div>
+    <button id="loginButton">Войти</button>
+</div>
 
-        <!-- Dashboard Section -->
-        <div id="dashboard-section" class="dashboard">
-            <h2>Админ панель</h2>
-            <div id="users-display" class="users-display">
-                <strong>Зарегистрированные пользователи:</strong>
-            </div>
-            <button id="registerButton">Зарегистрировать пользователя</button>
-            <button id="licenseButton">Лицензия</button>
-        </div>
-         <!-- License Page -->
-    <div id="license-page" class="dashboard">
-        <h2>Управление лицензией</h2>
+<!-- Dashboard Section -->
+<div id="dashboard-section" class="dashboard">
+    <h2>Админ панель</h2>
+    <div id="users-display" class="users-display">
+        <strong>Зарегистрированные пользователи:</strong>
 
-        <label for="license-username">Имя пользователя:</label>
-        <input type="text" id="license-username" placeholder="Введите имя пользователя">
-
-        <div class="license-actions">
-            <button onclick="generateLicense()">Сгенерировать и скачать лицензию</button>
-            <button onclick="generateLicense()">Скачать лицензию</button>
-            <button id="activate-license">Активировать лицензию</button>
-            <button id="close-license">Закрыть</button>
-        </div>
     </div>
-    <!-- Activate License Modal -->
-    <div id="modal-overlay" class="modal-overlay"></div>
-    <div id="activate-modal" class="modal">
-        <h3>Активировать лицензию</h3>
-        <label for="activate-username">Имя пользователя:</label>
-        <input type="text" id="activate-username" placeholder="Введите имя пользователя">
-        <button onclick="activateLicense()">Активировать</button>
-        <button id="close-activate-modal">Закрыть</button>
+    <ul>
+        {% for user in users %}
+        <li><a href="/user/{{ user.id }}">{{ user.username }}</a></li>
+        {% endfor %}
+    </ul>
+    <button id="registerButton">Зарегистрировать пользователя</button>
+    <button id="licenseButton">Лицензия</button>
+</div>
+<!-- License Page -->
+<div id="license-page" class="dashboard">
+    <h2>Управление лицензией</h2>
+
+    <label for="license-username">Имя пользователя:</label>
+    <input type="text" id="license-username" placeholder="Введите имя пользователя">
+
+    <div class="license-actions">
+        <button onclick="generateLicense()">Сгенерировать и скачать лицензию</button>
+        <button onclick="generateLicense()">Скачать лицензию</button>
+        <button id="activate-license">Активировать лицензию</button>
+        <button id="close-license">Закрыть</button>
     </div>
-        <!-- User Registration Modal -->
-        <div id="modal-overlay" class="modal-overlay"></div>
-        <div id="user-modal" class="modal">
-            <h3>Регистрация пользователя</h3>
-            <label for="new-username">Имя пользователя:</label>
-            <input type="text" id="new-username" placeholder="Введите имя пользователя">
+</div>
+<!-- Activate License Modal -->
+<div id="modal-overlay" class="modal-overlay"></div>
+<div id="activate-modal" class="modal">
+    <h3>Активировать лицензию</h3>
+    <label for="activate-username">Имя пользователя:</label>
+    <input type="text" id="activate-username" placeholder="Введите имя пользователя">
+    <button onclick="activateLicense()">Активировать</button>
+    <button id="close-activate-modal">Закрыть</button>
+</div>
+<!-- User Registration Modal -->
+<div id="modal-overlay" class="modal-overlay"></div>
+<div id="user-modal" class="modal">
+    <h3>Регистрация пользователя</h3>
+    <label for="new-username">Имя пользователя:</label>
+    <input type="text" id="new-username" placeholder="Введите имя пользователя">
 
-            <label for="new-password">Пароль:</label>
-            <input type="password" id="new-password" placeholder="Введите пароль">
+    <label for="new-password">Пароль:</label>
+    <input type="password" id="new-password" placeholder="Введите пароль">
 
-            <button onclick="registerUser()" class="register">Зарегистрировать</button>
-            <button id="close-modal">Закрыть</button>
-        </div>
-        <div id="user-list" style="display: none;">
-            <ul>
-                {% for user in users %}
-                <li><a href="/user/{{ user.id }}">{{ user.username }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </body>
-    </html>
-    <script defer src="static/script.js"></script>
+    <button onclick="registerUser()" class="register">Зарегистрировать</button>
+    <button id="close-modal">Закрыть</button>
+</div>
+<div id="user-list" style="display: none;">
+    <ul>
+        {% for user in users %}
+        <li><a href="/user/{{ user.id }}">{{ user.username }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
+<script defer src="/static/script.js"></script>
