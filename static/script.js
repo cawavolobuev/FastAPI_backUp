@@ -96,17 +96,28 @@ function loadUsers() {
         .then(response => response.json())
         .then(data => {
             const usersDisplay = document.getElementById('users-display');
-            usersDisplay.innerHTML = '<strong>Registered Users:</strong><br>';
+            usersDisplay.innerHTML = '<strong>Зарегистрированные пользователи:</strong><br>';
             data.users.forEach(user => {
                 const userElement = document.createElement('div');
                 userElement.textContent = user.username;
                 usersDisplay.appendChild(userElement);
             });
+
+            const userList = document.getElementById('user-list');
+            userList.style.display = 'block';
+            const userListUl = userList.querySelector('ul');
+            userListUl.innerHTML = '';
+            data.users.forEach(user => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `/user/${user.id}`;
+                link.textContent = user.username;
+                li.appendChild(link);
+                userListUl.appendChild(li);
+            });
         })
         .catch(err => console.error('Error loading users:', err));
 }
-const userList = document.getElementById('user-list');
-console.log(userList.innerHTML); // Список пользователей
 function generateLicense() {
     const username = document.getElementById('license-username').value;
 

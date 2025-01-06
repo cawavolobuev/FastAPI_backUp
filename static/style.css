@@ -175,3 +175,30 @@ button:hover {
     .hidden {
     display: none;
 }
+#user-list {
+    display: none;
+    background: #e9ecef;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#user-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#user-list ul li {
+    margin: 5px 0;
+}
+
+#user-list ul li a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+#user-list ul li a:hover {
+    text-decoration: underline;
+}

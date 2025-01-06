@@ -18,8 +18,8 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key, lo
 from starlette.responses import FileResponse
 from datetime import datetime, timedelta
 from hashlib import sha256
-#from models import License, User
-#from schemas import LicenseCreate, LicenseResponse
+# from models import License, User
+# from schemas import LicenseCreate, LicenseResponse
 import uuid
 from fastapi.staticfiles import StaticFiles
 
@@ -33,7 +33,6 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger(__name__)
-
 
 # Настройка базы данных
 DATABASE_URL = "sqlite:///./backup_system.db"
@@ -55,6 +54,7 @@ os.makedirs(BACKUP_DIR, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 # Определение моделей базы данных
 class Backup(Base):
     __tablename__ = "backups"
@@ -68,6 +68,7 @@ class Backup(Base):
 
     user = relationship("User", back_populates="backups")
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -77,6 +78,7 @@ class User(Base):
     encryption_key = Column(String)  # Уникальный ключ шифрования
     backups = relationship("Backup", back_populates="user")
     licenses = relationship("License", back_populates="user")
+
 
 class License(Base):
     __tablename__ = "licenses"
@@ -90,18 +92,28 @@ class License(Base):
 
     user = relationship("User", back_populates="licenses")
 
+
 class LicenseActivationRequest(BaseModel):
     key: str
 
+
 Base.metadata.create_all(bind=engine)
+
 
 # Pydantic модели
 class UserCreate(BaseModel):
     username: str
     password: str
 
+
 class LicenseCreate(BaseModel):
     key: str
+
+
+class LicenseVerifyRequest(BaseModel):
+    license_data: str
+    signature: str
+
 
 class LicenseResponse(BaseModel):
     id: int
@@ -182,18 +194,22 @@ def check_license(
     raise HTTPException(status_code=403, detail="Лицензия недействительна или истекла")
 """
 
+
 def get_password_hash(password: str):
     return pwd_context.hash(password)
+
 
 def generate_encryption_key():
     """Создает уникальный ключ шифрования."""
     return Fernet.generate_key().decode()
+
 
 def authenticate_user(db, username: str, password: str):
     user = db.query(User).filter(User.username == username).first()
     if not user or not pwd_context.verify(password, user.hashed_password):
         return False
     return user
+
 
 def get_current_user(token: str = Depends(oauth2_scheme), db=Depends(get_db)):
     user = db.query(User).filter(User.id == int(token)).first()
@@ -205,20 +221,25 @@ def get_current_user(token: str = Depends(oauth2_scheme), db=Depends(get_db)):
         )
     return user
 
+
 def get_user_backup_dir(user_id: int):
     """Получить путь к папке пользователя для хранения резервных копий."""
     user_dir = os.path.join(BACKUP_DIR, str(user_id))
     os.makedirs(user_dir, exist_ok=True)
     return user_dir
 
+
+import os
+
+
 def sign_license(data: str, private_key_path: str) -> str:
     """
     Подписать данные лицензии с использованием приватного ключа.
-
-    :param data: Строка данных лицензии.
-    :param private_key_path: Путь к приватному ключу в формате PEM.
-    :return: Подпись в виде строки Base64.
     """
+    if not os.path.exists(private_key_path):
+        logger.error(f"Приватный ключ не найден: {private_key_path}")
+        raise HTTPException(status_code=500, detail="Приватный ключ не найден")
+
     with open(private_key_path, "rb") as f:
         private_key = load_pem_private_key(f.read(), password=None)
 
@@ -231,7 +252,6 @@ def sign_license(data: str, private_key_path: str) -> str:
     return base64.b64encode(signature).decode()
 
 
-
 # Маршруты
 templates = Jinja2Templates(directory="templates")
 
@@ -241,8 +261,10 @@ def admin_panel(request: Request, db: Session = Depends(get_db)):
     users = db.query(User).all()
     return templates.TemplateResponse("admin.html", {"request": request, "users": users})
 
+
 @app.post("/licenses/activation-key", response_model=LicenseResponse)
-def activate_license(request: LicenseActivationRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def activate_license(request: LicenseActivationRequest, db: Session = Depends(get_db),
+                     current_user: User = Depends(get_current_user)):
     """Активировать ключ активации."""
     license_entry = db.query(License).filter(License.key == request.key).first()
     if not license_entry:
@@ -264,6 +286,7 @@ def activate_license(request: LicenseActivationRequest, db: Session = Depends(ge
         user_id=license_entry.user_id,
     )
 
+
 @app.post("/licenses/generate", response_model=LicenseResponse)
 def generate_license(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Генерация нового ключа активации для текущего пользователя."""
@@ -279,52 +302,71 @@ def generate_license(db: Session = Depends(get_db), current_user: User = Depends
         user_id=new_license.user_id,
     )
 
+
 @app.get("/licenses/download")
 def download_license(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Скачать файл лицензии для текущего пользователя."""
-    # Получение активной лицензии пользователя
-    license_entry = db.query(License).filter(
-        License.user_id == current_user.id,
-        License.is_active == True
-    ).first()
+    try:
+        # Получение активной лицензии пользователя
+        license_entry = db.query(License).filter(
+            License.user_id == current_user.id,
+            License.is_active == True
+        ).first()
 
-    if not license_entry:
-        raise HTTPException(status_code=404, detail="Активная лицензия не найдена")
+        if not license_entry:
+            logger.error(f"Активная лицензия не найдена для пользователя {current_user.id}")
+            raise HTTPException(status_code=404, detail="Активная лицензия не найдена")
 
-    # Формирование данных лицензии
-    license_data = f"USER:{current_user.id};LICENSE:{license_entry.key}"
+        # Формирование данных лицензии
+        license_data = f"USER:{current_user.id};LICENSE:{license_entry.key}"
+        logger.info(f"Данные лицензии: {license_data}")
 
-    # Подпись лицензии
-    signature = sign_license(license_data, "private_key.pem")
+        # Подпись лицензии
+        try:
+            signature = sign_license(license_data, "/Users/cawa/PycharmProjects/FastAPI_backUp/keys/private_key.pem")
+        except Exception as e:
+            logger.error(f"Ошибка при подписании лицензии: {e}")
+            raise HTTPException(status_code=500, detail="Ошибка при подписании лицензии")
 
-    # Формирование содержимого файла
-    license_file_content = f"{license_data}\n{signature}"
+        # Формирование содержимого файла
+        license_file_content = f"{license_data}\n{signature}"
+        logger.info(f"Содержимое файла лицензии: {license_file_content}")
 
-    # Возврат файла в ответе
-    return Response(
-        content=license_file_content,
-        media_type="text/plain",
-        headers={"Content-Disposition": f"attachment; filename=license_{current_user.id}.lic"}
-    )
+        # Возврат файла в ответе
+        return Response(
+            content=license_file_content,
+            media_type="text/plain",
+            headers={"Content-Disposition": f"attachment; filename=license_{current_user.id}.lic"}
+        )
+    except Exception as e:
+        logger.error(f"Ошибка при обработке запроса загрузки лицензии: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка на сервере")
 
 
 @app.post("/licenses/verify")
-def verify_license(license_data: str, signature: str):
+def verify_license(request: LicenseVerifyRequest):
     """Проверить цифровую подпись лицензии."""
     try:
-        # Загрузка публичного ключа с сервера
-        with open("public_key.pem", "rb") as f:
+        # Логируем входные данные
+        logger.info(f"Данные лицензии: {request.license_data}")
+        logger.info(f"Подпись: {request.signature}")
+
+        # Загрузка публичного ключа
+        with open("keys/public_key.pem", "rb") as f:
             public_key_obj = load_pem_public_key(f.read())
 
+        # Проверка подписи
         public_key_obj.verify(
-            base64.b64decode(signature.encode()),
-            license_data.encode(),
+            base64.b64decode(request.signature),
+            request.license_data.encode(),
             padding.PKCS1v15(),
             hashes.SHA256()
         )
         return {"valid": True}
     except Exception as e:
+        logger.error(f"Ошибка проверки подписи: {e}")
         raise HTTPException(status_code=400, detail="Недействительная цифровая подпись")
+
 
 @app.get("/user/{user_id}", response_class=HTMLResponse)
 def user_backups(user_id: int, request: Request, db: Session = Depends(get_db)):
@@ -368,9 +410,9 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     return {"access_token": str(user.id), "token_type": "bearer", "encryption_key": user.encryption_key}
 
 
-
 @app.post("/backups/upload")
-async def upload_backup(files: List[UploadFile], current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def upload_backup(files: List[UploadFile], current_user: User = Depends(get_current_user),
+                        db: Session = Depends(get_db)):
     """Загрузка файлов с проверкой лицензии."""
     active_license = db.query(License).filter(License.user_id == current_user.id, License.is_active == True).first()
     if not active_license:
@@ -380,7 +422,6 @@ async def upload_backup(files: List[UploadFile], current_user: User = Depends(ge
     if active_license.license_data and active_license.signature:
         public_key = ...  # Загрузить открытый ключ сервера
         verify_license(active_license.license_data, active_license.signature, public_key)
-
 
     user_dir = get_user_backup_dir(current_user.id)
     saved_files = []
@@ -411,7 +452,8 @@ async def upload_backup(files: List[UploadFile], current_user: User = Depends(ge
                 base, ext = os.path.splitext(file.filename)
                 new_filename = f"{base}_{datetime.now().strftime('%Y%m%d%H%M%S')}{ext}"
                 file_path = os.path.join(user_dir, new_filename)
-                logger.warning(f"Файл {file.filename} уже существует, но содержимое отличается. Используется имя {new_filename}")
+                logger.warning(
+                    f"Файл {file.filename} уже существует, но содержимое отличается. Используется имя {new_filename}")
             else:
                 logger.info(f"Файл {file.filename} уже существует и идентичен новому. Пропускаем загрузку.")
                 return {"msg": f"Файл {file.filename} уже существует и идентичен новому"}
@@ -451,6 +493,7 @@ def list_backups(current_user: User = Depends(get_current_user), db: SessionLoca
         for backup in backups
     ]
 
+
 @app.get("/backups/download/{filename}")
 def download_backup(filename: str, current_user: User = Depends(get_current_user)):
     user_dir = get_user_backup_dir(current_user.id)
@@ -466,12 +509,31 @@ def download_backup(filename: str, current_user: User = Depends(get_current_user
 
 
 @app.delete("/backups/{filename}")
-def delete_backup(filename: str, current_user: User = Depends(get_current_user)):
+def delete_backup(filename: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Удаление файла и его записи из базы данных."""
     user_dir = get_user_backup_dir(current_user.id)
     file_path = os.path.join(user_dir, filename)
 
+    # Проверка существования файла на диске
     if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
+        logger.warning(f"Попытка удалить несуществующий файл: {filename}")
+        raise HTTPException(status_code=404, detail="Файл не найден")
 
-    os.remove(file_path)
-    return {"msg": "File deleted successfully"}
+    # Удаление файла с диска
+    try:
+        os.remove(file_path)
+        logger.info(f"Файл {filename} успешно удалён с диска.")
+    except Exception as e:
+        logger.error(f"Ошибка при удалении файла {filename}: {e}")
+        raise HTTPException(status_code=500, detail="Ошибка при удалении файла")
+
+    # Удаление записи из базы данных
+    backup_entry = db.query(Backup).filter_by(filename=filename, user_id=current_user.id).first()
+    if backup_entry:
+        db.delete(backup_entry)
+        db.commit()
+        logger.info(f"Запись о файле {filename} успешно удалена из базы данных.")
+    else:
+        logger.warning(f"Запись о файле {filename} не найдена в базе данных.")
+
+    return {"msg": "Файл успешно удален"}

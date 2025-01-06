@@ -336,3 +336,116 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^^^
 AttributeError: module 'bcrypt' has no attribute '__about__'
 2025-01-04 21:56:34,156 - INFO - Пользователь 12345678 успешно зарегистрирован
+2025-01-06 23:14:55,679 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-06 23:14:55,930 - INFO - Пользователь cawa успешно зарегистрирован
+2025-01-06 23:16:15,894 - INFO - Получен файл 888-license.exe.enc, размер: 120 байт
+2025-01-06 23:16:15,894 - INFO - Контрольная сумма файла 888-license.exe.enc: e34a3e18f23388d47a35882c10026fbb8fdad7a7736307997d36966165382950
+2025-01-06 23:16:15,894 - INFO - Файл 888-license.exe.enc успешно сохранён
+2025-01-06 23:19:43,916 - INFO - Файл 888-license.exe.enc отправлен пользователю cawa
+2025-01-06 23:50:12,209 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-06 23:50:20,411 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-06 23:50:20,411 - ERROR - Ошибка при подписании лицензии: [Errno 2] No such file or directory: 'private_key.pem'
+2025-01-06 23:50:20,412 - ERROR - Ошибка при обработке запроса загрузки лицензии: 500: Ошибка при подписании лицензии
+2025-01-07 00:01:31,592 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:01:36,244 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-07 00:01:36,244 - ERROR - Приватный ключ не найден: /keys/private_key.pem
+2025-01-07 00:01:36,245 - ERROR - Ошибка при подписании лицензии: 500: Приватный ключ не найден
+2025-01-07 00:01:36,245 - ERROR - Ошибка при обработке запроса загрузки лицензии: 500: Ошибка при подписании лицензии
+2025-01-07 00:03:16,016 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-07 00:03:16,080 - INFO - Содержимое файла лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+PVPJE5g9yuue+u97D811nU7o3f3J1Q09eHz93PtlzRrLAlrtVuvDr7lMeNvrvk9GduJdcTSDt1vxFCJYFmOTdhaEFciJZm+nAlk7hwOGnb6+edrkMtctWzPVFhLk2xnsc/sCjJV07F1ry3Igw0DMx3HNBtBYccmaFKoMLvFVK50/IAeL/McsToPYH6KCZ0df6EZbC9k8Wo+S07+ONRrC4qfbVZuy/bCwmxMt/9Dqm+qRLeNlVnfYtg3WgVUVLw9kIagZfJP7NBoWqLv9PnqUtzZQ6Mt4jqVhVSaNLFaozOc/LEI1SiVTUS73lXFVC9pOe36LV/uURcceg7md+Yhl2g==
+2025-01-07 00:11:39,426 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:18:45,590 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:18:54,664 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-07 00:18:54,664 - INFO - Подпись: PVPJE5g9yuue+u97D811nU7o3f3J1Q09eHz93PtlzRrLAlrtVuvDr7lMeNvrvk9GduJdcTSDt1vxFCJYFmOTdhaEFciJZm+nAlk7hwOGnb6+edrkMtctWzPVFhLk2xnsc/sCjJV07F1ry3Igw0DMx3HNBtBYccmaFKoMLvFVK50/IAeL/McsToPYH6KCZ0df6EZbC9k8Wo+S07+ONRrC4qfbVZuy/bCwmxMt/9Dqm+qRLeNlVnfYtg3WgVUVLw9kIagZfJP7NBoWqLv9PnqUtzZQ6Mt4jqVhVSaNLFaozOc/LEI1SiVTUS73lXFVC9pOe36LV/uURcceg7md+Yhl2g==
+2025-01-07 00:18:54,664 - ERROR - Ошибка проверки подписи: [Errno 2] No such file or directory: 'public_key.pem'
+2025-01-07 00:23:26,653 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-07 00:23:26,654 - INFO - Подпись: PVPJE5g9yuue+u97D811nU7o3f3J1Q09eHz93PtlzRrLAlrtVuvDr7lMeNvrvk9GduJdcTSDt1vxFCJYFmOTdhaEFciJZm+nAlk7hwOGnb6+edrkMtctWzPVFhLk2xnsc/sCjJV07F1ry3Igw0DMx3HNBtBYccmaFKoMLvFVK50/IAeL/McsToPYH6KCZ0df6EZbC9k8Wo+S07+ONRrC4qfbVZuy/bCwmxMt/9Dqm+qRLeNlVnfYtg3WgVUVLw9kIagZfJP7NBoWqLv9PnqUtzZQ6Mt4jqVhVSaNLFaozOc/LEI1SiVTUS73lXFVC9pOe36LV/uURcceg7md+Yhl2g==
+2025-01-07 00:23:26,654 - ERROR - Ошибка проверки подписи: [Errno 2] No such file or directory: '/keys/public_key.pem'
+2025-01-07 00:24:20,154 - INFO - Данные лицензии: USER:9;LICENSE:a86cf378-305b-4c43-8ffb-1e0b896c546b
+2025-01-07 00:24:20,155 - INFO - Подпись: PVPJE5g9yuue+u97D811nU7o3f3J1Q09eHz93PtlzRrLAlrtVuvDr7lMeNvrvk9GduJdcTSDt1vxFCJYFmOTdhaEFciJZm+nAlk7hwOGnb6+edrkMtctWzPVFhLk2xnsc/sCjJV07F1ry3Igw0DMx3HNBtBYccmaFKoMLvFVK50/IAeL/McsToPYH6KCZ0df6EZbC9k8Wo+S07+ONRrC4qfbVZuy/bCwmxMt/9Dqm+qRLeNlVnfYtg3WgVUVLw9kIagZfJP7NBoWqLv9PnqUtzZQ6Mt4jqVhVSaNLFaozOc/LEI1SiVTUS73lXFVC9pOe36LV/uURcceg7md+Yhl2g==
+2025-01-07 00:25:47,492 - INFO - Получен файл глава 4.docx.enc, размер: 32524 байт
+2025-01-07 00:25:47,493 - INFO - Контрольная сумма файла глава 4.docx.enc: c7414b55cbdf72dd1489bffacf6f2ffb58cdb5c535c55afb47772454c1163659
+2025-01-07 00:25:47,493 - INFO - Файл глава 4.docx.enc успешно сохранён
+2025-01-07 00:34:39,844 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:39:33,717 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:39:54,795 - ERROR - Файл 888-license.exe.enc не найден для пользователя cawa
+2025-01-07 00:44:34,532 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:44:48,642 - WARNING - Попытка удалить файл, который не существует: 888-license.exe.enc
+2025-01-07 00:45:05,357 - ERROR - Файл 888-license.exe.enc не найден для пользователя cawa
+2025-01-07 00:45:21,558 - INFO - Файл глава 4.docx.enc удалён для пользователя cawa
+2025-01-07 00:50:19,075 - INFO - Получен файл глава 4.docx.enc, размер: 32524 байт
+2025-01-07 00:50:19,076 - INFO - Контрольная сумма файла глава 4.docx.enc: b3adc60843c04ca624ffb5f11072d64c65b8fbca155d2a7688b764e7c08d9c38
+2025-01-07 00:50:19,076 - INFO - Файл глава 4.docx.enc успешно сохранён
+2025-01-07 00:50:46,786 - INFO - Файл глава 4.docx.enc успешно удалён с диска.
+2025-01-07 00:50:46,791 - INFO - Запись о файле глава 4.docx.enc успешно удалена из базы данных.
+2025-01-07 00:53:18,130 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:57:34,983 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 00:59:33,949 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 01:05:36,465 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 01:10:45,094 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'

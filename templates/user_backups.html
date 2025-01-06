@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резервные копии пользователей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 2px;
+            border: none;
+            color: white;
+            background-color: #28a745;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Резервные копии пользователей:</h1>
+        <table id="backupTable">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Резервная копия</th>
+                    <th>Скачать</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const backupTableBody = document.querySelector('#backupTable tbody');
+
+        // Function to fetch backups from server and populate the table
+        async function loadTableData() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/backups');
+                const backups = await response.json();
+
+                backupTableBody.innerHTML = '';
+                backups.forEach((backup, index) => {
+                    const row = document.createElement('tr');
+
+                    const downloadUrl = `http://127.0.0.1:8000/backups/download/${backup.name}`;
+
+                    row.innerHTML = `
+                        <td>${backup.date}</td>
+                        <td>${backup.name}</td>
+                        <td><button onclick="downloadBackup('${downloadUrl}')">Download</button></td>
+                        <td><button class="delete" onclick="deleteBackup('${backup.name}')">Delete</button></td>
+                    `;
+
+                    backupTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching backups:', error);
+                alert('Failed to load backups from the server.');
+            }
+        }
+
+        // Function to simulate downloading a backup
+        function downloadBackup(url) {
+            alert(`Starting download for: ${url}`);
+            // Simulate download action (replace with actual download logic)
+            window.location.href = url;
+        }
+
+        // Function to delete a backup
+        async function deleteBackup(backupName) {
+            if (confirm('Are you sure you want to delete this backup?')) {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/backups/${backupName}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        alert('Backup deleted successfully.');
+                        loadTableData();
+                    } else {
+                        alert('Failed to delete backup.');
+                    }
+                } catch (error) {
+                    console.error('Error deleting backup:', error);
+                    alert('Failed to delete backup.');
+                }
+            }
+        }
+
+        // Initial table load
+        loadTableData();
+    </script>
+</body>
+</html>
