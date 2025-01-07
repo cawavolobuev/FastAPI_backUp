@@ -162,3 +162,43 @@ function activateLicense() {
         alert('Please enter a username');
     }
 }
+
+
+function registerUser() {
+    const username = document.getElementById("new-username").value;
+    const password = document.getElementById("new-password").value;
+
+    if (!username || !password) {
+        alert("Введите имя пользователя и пароль!");
+        return;
+    }
+
+    fetch("/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                alert("Пользователь успешно зарегистрирован!");
+                location.reload(); // Перезагрузка страницы для обновления списка пользователей
+            } else {
+                response.json().then((data) => {
+                    alert(`Ошибка: ${data.detail}`);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Ошибка при регистрации:", error);
+            alert("Произошла ошибка при регистрации!");
+        });
+}
+
+document.getElementById("registerButton").addEventListener("click", () => {
+    document.getElementById("user-modal").style.display = "block";
+});
+document.getElementById("close-modal").addEventListener("click", () => {
+    document.getElementById("user-modal").style.display = "none";
+});

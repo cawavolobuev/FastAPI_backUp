@@ -333,3 +333,18 @@
 2025-01-07 01:10:34,612 - INFO - Переход на страницу: LoginPage
 2025-01-07 01:10:46,864 - INFO - Пользователь cawa вошёл в систему
 2025-01-07 01:10:46,865 - INFO - Переход на страницу: MainPage
+2025-01-07 12:13:15,429 - INFO - Переход на страницу: LoginPage
+2025-01-07 12:18:25,613 - INFO - Переход на страницу: LoginPage
+2025-01-07 12:18:36,820 - ERROR - Ошибка входа пользователя cawa: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /token (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102451190>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-01-07 12:18:57,374 - INFO - Пользователь cawa вошёл в систему
+2025-01-07 12:18:57,374 - INFO - Переход на страницу: MainPage
+2025-01-07 12:19:18,659 - INFO - Список резервных копий успешно получен
+2025-01-07 12:22:56,587 - INFO - Переход на страницу: LoginPage
+2025-01-07 12:23:10,438 - ERROR - Ошибка входа пользователя Cawa: 401 Client Error: Unauthorized for url: http://127.0.0.1:8000/token
+2025-01-07 12:23:19,724 - INFO - Пользователь cawa вошёл в систему
+2025-01-07 12:23:19,724 - INFO - Переход на страницу: MainPage
+2025-01-07 12:23:38,026 - INFO - Файл script.js.enc успешно загружен
+2025-01-07 12:24:04,344 - INFO - Список резервных копий успешно получен
+2025-01-07 12:24:46,376 - INFO - Резервная копия script.js.enc успешно загружена и сохранена в /Users/cawa/Downloads/scriptnoenc.js.enc
+2025-01-07 12:25:35,924 - INFO - Резервная копия script.js.enc успешно удалена
+2025-01-07 12:25:35,928 - INFO - Список резервных копий успешно получен

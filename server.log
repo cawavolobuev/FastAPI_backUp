@@ -449,3 +449,41 @@ Traceback (most recent call last):
     version = _bcrypt.__about__.__version__
               ^^^^^^^^^^^^^^^^^
 AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 12:18:54,550 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 12:23:18,246 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 12:23:35,958 - INFO - Получен файл script.js.enc, размер: 9164 байт
+2025-01-07 12:23:35,958 - INFO - Контрольная сумма файла script.js.enc: de54b737315f7b72e7154e01b7b4e49c8e081edd7931a243a0b4c2fd1f47ba4f
+2025-01-07 12:23:35,958 - INFO - Файл script.js.enc успешно сохранён
+2025-01-07 12:24:30,592 - INFO - Файл script.js.enc отправлен пользователю cawa
+2025-01-07 12:25:34,056 - INFO - Файл script.js.enc успешно удалён с диска.
+2025-01-07 12:25:34,060 - INFO - Запись о файле script.js.enc успешно удалена из базы данных.
+2025-01-07 13:54:50,761 - INFO - Пользователь qwerty успешно зарегистрирован
+2025-01-07 14:21:04,248 - ERROR - Активная лицензия не найдена для пользователя qwerty
+2025-01-07 14:21:04,248 - ERROR - Ошибка при обработке запроса загрузки лицензии для qwerty: 404: Активная лицензия не найдена
+2025-01-07 14:21:56,064 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-07 14:24:33,533 - INFO - Данные лицензии для пользователя qwerty: USER:10;LICENSE:b1f8d2cb-d392-4116-814b-ec2829e80aae
+2025-01-07 14:24:33,615 - INFO - Содержимое файла лицензии для qwerty: USER:10;LICENSE:b1f8d2cb-d392-4116-814b-ec2829e80aae
+JGdgF8HOB7zkkwdpKdMDq7EBgtmvERpa+AiWCelb/OO+HisdO6E8ewUtN0KA5dbDj5iSj8CG5Q5IHJGIMdrKj8vJIxAl5G78WlwGDnkTniYPNnVRiQE/ZptWg6IxffVGI2E1Rcku9JaSr00y5Bofk3DgYaP9F576+0gS4QnU6l/f3LTxWbxBkKdSIL5Nov2Xe/h6Pr2uGbU/qd5k4hSgovhnRMNDhbaWDn6YJnpfs0Y+dAKVXC3Ko6snzZ03dRyXUL0Zemsjm8occt4T5U32SMLO/M+SM1RBKUfZ8EhxrsSomJ6+6ysYJ8D5aLOwtQgKFF+nBISgkSwEIK6u2FcbFQ==
+2025-01-07 14:33:41,074 - INFO - Пользователь asdf успешно зарегистрирован
+2025-01-07 14:34:06,826 - ERROR - Активная лицензия не найдена для пользователя asdf
+2025-01-07 14:34:06,826 - ERROR - Ошибка при обработке запроса загрузки лицензии для asdf: 404: Активная лицензия не найдена
+2025-01-07 14:34:52,818 - ERROR - Активная лицензия не найдена для пользователя asdf
+2025-01-07 14:34:52,818 - ERROR - Ошибка при обработке запроса загрузки лицензии для asdf: 404: Активная лицензия не найдена
+2025-01-07 14:37:00,032 - INFO - Данные лицензии для пользователя asdf: USER:11;LICENSE:cb26daa1-fb81-4208-bbb4-63f4cd7ec98f
+2025-01-07 14:37:00,120 - INFO - Содержимое файла лицензии для asdf: USER:11;LICENSE:cb26daa1-fb81-4208-bbb4-63f4cd7ec98f
+V2CNwMUMt73TELDMlRVZGkmuwvE2l+tn/YSiFEGqEjF0KtEe/qerbwWBOR71zKPq3owdyUjhhAB0hsMpXRI2Ckc2tYe7tyuDVU+cbT8BfHx3c9c84NYstGl02W50rHzmilBPEZjN3BDrlza6HbQtOnv+q4gZVaQb375gApqVbLQZfeabPnl4claKlMmcxA+xO1cbmcWn6kiDnGHD2uniNmUZbQiqW8KADZj/IB8mPt37Ck/FSqQaxXvWAKY/0ABO58qw9b1HKMWcPcWwSIrAUYrfPovnBnb6JPfjc0Aq8AkUZ2dmMp6mKK33b0Djj6jLlJ3OzPaJ8YlAcN3UohigqA==

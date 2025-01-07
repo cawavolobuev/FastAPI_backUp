@@ -288,10 +288,16 @@ def activate_license(request: LicenseActivationRequest, db: Session = Depends(ge
 
 
 @app.post("/licenses/generate", response_model=LicenseResponse)
-def generate_license(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    """Генерация нового ключа активации для текущего пользователя."""
+def generate_license(username: str = Body(...), db: Session = Depends(get_db)):
+    """
+    Генерация нового ключа активации и привязка к указанному пользователю.
+    """
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь с таким именем не найден")
+
     key = str(uuid.uuid4())  # Генерация уникального ключа
-    new_license = License(key=key, is_active=False, user_id=current_user.id)
+    new_license = License(key=key, is_active=False, user_id=user.id)  # Привязываем к user_id
     db.add(new_license)
     db.commit()
     db.refresh(new_license)
@@ -302,24 +308,30 @@ def generate_license(db: Session = Depends(get_db), current_user: User = Depends
         user_id=new_license.user_id,
     )
 
-
 @app.get("/licenses/download")
-def download_license(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    """Скачать файл лицензии для текущего пользователя."""
+def download_license(username: str, db: Session = Depends(get_db)):
+    """
+    Скачать файл лицензии для указанного пользователя.
+    """
     try:
-        # Получение активной лицензии пользователя
-        license_entry = db.query(License).filter(
-            License.user_id == current_user.id,
-            License.is_active == True
-        ).first()
+        # Найти пользователя по имени
+        user = db.query(User).filter(User.username == username).first()
+        if not user:
+            logger.error(f"Пользователь с именем {username} не найден")
+            raise HTTPException(status_code=404, detail="Пользователь не найден")
 
+        # Найти активную лицензию для пользователя
+        license_entry = db.query(License).filter(
+            License.user_id == user.id,
+            License.is_active == False
+        ).first()
         if not license_entry:
-            logger.error(f"Активная лицензия не найдена для пользователя {current_user.id}")
-            raise HTTPException(status_code=404, detail="Активная лицензия не найдена")
+            logger.error(f"Лицензия не найдена для пользователя {username}")
+            raise HTTPException(status_code=404, detail="Лицензия не найдена")
 
         # Формирование данных лицензии
-        license_data = f"USER:{current_user.id};LICENSE:{license_entry.key}"
-        logger.info(f"Данные лицензии: {license_data}")
+        license_data = f"USER:{user.id};LICENSE:{license_entry.key}"
+        logger.info(f"Данные лицензии для пользователя {username}: {license_data}")
 
         # Подпись лицензии
         try:
@@ -330,18 +342,17 @@ def download_license(current_user: User = Depends(get_current_user), db: Session
 
         # Формирование содержимого файла
         license_file_content = f"{license_data}\n{signature}"
-        logger.info(f"Содержимое файла лицензии: {license_file_content}")
+        logger.info(f"Содержимое файла лицензии для {username}: {license_file_content}")
 
         # Возврат файла в ответе
         return Response(
             content=license_file_content,
             media_type="text/plain",
-            headers={"Content-Disposition": f"attachment; filename=license_{current_user.id}.lic"}
+            headers={"Content-Disposition": f"attachment; filename=license_{user.id}.lic"}
         )
     except Exception as e:
-        logger.error(f"Ошибка при обработке запроса загрузки лицензии: {e}")
+        logger.error(f"Ошибка при обработке запроса загрузки лицензии для {username}: {e}")
         raise HTTPException(status_code=500, detail="Ошибка на сервере")
-
 
 @app.post("/licenses/verify")
 def verify_license(request: LicenseVerifyRequest):
