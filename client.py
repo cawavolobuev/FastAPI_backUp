@@ -38,7 +38,6 @@ class Application(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Клиент резервного копирования")
-        self.geometry("500x400")
         self.config = load_config()
 
         # Хранилище токена и ключей
@@ -61,6 +60,11 @@ class Application(tk.Tk):
 
         # Переход на страницу входа
         self.show_frame("LoginPage")
+
+        # Автоматическое подстраивание размеров окна
+        self.update_idletasks()
+        self.minsize(self.winfo_width(), self.winfo_height())  # Минимальный размер окна
+        self.geometry(f"{self.winfo_width()}x{self.winfo_height()}")  # Установка начального размера
 
     def show_frame(self, page_name):
         """Отображение страницы по имени."""
@@ -196,36 +200,36 @@ class MainPage(tk.Frame):
         super().__init__(parent)
         self.controller = controller
 
+        # Создаем главную рамку и выравниваем элементы по центру
+        main_frame = tk.Frame(self)
+        main_frame.pack(expand=True, fill="both")
+
         # Заголовок страницы
-        tk.Label(self, text="Главная страница", font=("Arial", 16)).pack(pady=10)
+        tk.Label(main_frame, text="Главная страница", font=("Arial", 16)).grid(row=0, column=0, columnspan=2, pady=10)
 
         # Кнопки операций
-        button_frame = tk.Frame(self)
-        button_frame.pack(pady=5)
-
-        tk.Button(button_frame, text="Выбрать файл для загрузки", command=self.upload_file).grid(row=0, column=0,
-                                                                                                 padx=5)
-        tk.Button(button_frame, text="Показать резервные копии", command=self.list_backups).grid(row=0, column=1,
-                                                                                                 padx=5)
+        tk.Button(main_frame, text="Выбрать файл для загрузки", command=self.upload_file, width=30).grid(row=1,
+                                                                                                         column=0,
+                                                                                                         pady=5,
+                                                                                                         padx=10)
+        tk.Button(main_frame, text="Показать резервные копии", command=self.list_backups, width=30).grid(row=1,
+                                                                                                         column=1,
+                                                                                                         pady=5,
+                                                                                                         padx=10)
 
         # Список резервных копий
-        self.backup_listbox = tk.Listbox(self, width=80, height=10)
-        self.backup_listbox.pack(pady=10)
+        self.backup_listbox = tk.Listbox(main_frame, width=80, height=10)
+        self.backup_listbox.grid(row=2, column=0, columnspan=2, pady=10)
 
         # Кнопки для работы с резервными копиями
-        operation_frame = tk.Frame(self)
-        operation_frame.pack(pady=5)
-
-        tk.Button(operation_frame, text="Скачать выбранную резервную копию", command=self.download_backup).grid(row=0,
-                                                                                                                column=0,
-                                                                                                                padx=5)
-        tk.Button(operation_frame, text="Удалить выбранную резервную копию", command=self.delete_backup).grid(row=0,
-                                                                                                              column=1,
-                                                                                                              padx=5)
+        tk.Button(main_frame, text="Скачать выбранную резервную копию", command=self.download_backup, width=30).grid(
+            row=3, column=0, pady=5, padx=10)
+        tk.Button(main_frame, text="Удалить выбранную резервную копию", command=self.delete_backup, width=30).grid(
+            row=3, column=1, pady=5, padx=10)
 
         # Кнопка активации лицензии
-        tk.Button(self, text="Активировать лицензию", command=lambda: controller.show_frame("LicensePage")).pack(
-            pady=10)
+        tk.Button(main_frame, text="Активировать лицензию", command=lambda: controller.show_frame("LicensePage"),
+                  width=30).grid(row=4, column=0, columnspan=2, pady=20)
 
     def encrypt_file(self, file_path, key):
         """Шифрование файла перед отправкой на сервер."""
@@ -276,11 +280,10 @@ class MainPage(tk.Frame):
         """Получение списка резервных копий с сервера и обновление интерфейса."""
         headers = {"Authorization": f"Bearer {self.controller.token}"}
         try:
-            # Получение данных с сервера
             response = requests.get(f"http://127.0.0.1:8000/backups", headers=headers)
             response.raise_for_status()
 
-            backups = response.json()  # Обновлённый список резервных копий
+            backups = response.json()  # Обновленный список резервных копий
             logger.info("Список резервных копий успешно получен")
 
             # Очистка списка
