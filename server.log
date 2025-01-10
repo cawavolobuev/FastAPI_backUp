@@ -487,3 +487,38 @@ JGdgF8HOB7zkkwdpKdMDq7EBgtmvERpa+AiWCelb/OO+HisdO6E8ewUtN0KA5dbDj5iSj8CG5Q5IHJGI
 2025-01-07 14:37:00,032 - INFO - Данные лицензии для пользователя asdf: USER:11;LICENSE:cb26daa1-fb81-4208-bbb4-63f4cd7ec98f
 2025-01-07 14:37:00,120 - INFO - Содержимое файла лицензии для asdf: USER:11;LICENSE:cb26daa1-fb81-4208-bbb4-63f4cd7ec98f
 V2CNwMUMt73TELDMlRVZGkmuwvE2l+tn/YSiFEGqEjF0KtEe/qerbwWBOR71zKPq3owdyUjhhAB0hsMpXRI2Ckc2tYe7tyuDVU+cbT8BfHx3c9c84NYstGl02W50rHzmilBPEZjN3BDrlza6HbQtOnv+q4gZVaQb375gApqVbLQZfeabPnl4claKlMmcxA+xO1cbmcWn6kiDnGHD2uniNmUZbQiqW8KADZj/IB8mPt37Ck/FSqQaxXvWAKY/0ABO58qw9b1HKMWcPcWwSIrAUYrfPovnBnb6JPfjc0Aq8AkUZ2dmMp6mKK33b0Djj6jLlJ3OzPaJ8YlAcN3UohigqA==
+2025-01-10 12:40:58,556 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-10 12:40:58,796 - INFO - Пользователь zxcvb успешно зарегистрирован
+2025-01-10 12:44:19,167 - ERROR - Лицензия не найдена для пользователя zxcvb
+2025-01-10 12:44:19,168 - ERROR - Ошибка при обработке запроса загрузки лицензии для zxcvb: 404: Лицензия не найдена
+2025-01-10 12:45:07,667 - INFO - Данные лицензии для пользователя zxcvb: USER:12;LICENSE:3093a451-5afe-417f-af33-3bbcf7ad0719
+2025-01-10 12:45:07,738 - INFO - Содержимое файла лицензии для zxcvb: USER:12;LICENSE:3093a451-5afe-417f-af33-3bbcf7ad0719
+XaHYusgWnmnTTZDIZWi9JXL+Q2kADeclCySdEi3MHLOhY0vPp3OQavGMeVIijJTOGkGpbr6scwmo2CZ/wOLYgtUssCy/lwTYzFxpwp8HfhGVoPe2/znx6vmASBzXtKWSmIAf110Z0dlDzOyCvNiSyaBFHlG1be4ueYaEJdMCPktxThykvVjbeRKzCgvM+lmrAi5KfJP7/I5Q8AnftVpsRF9+Nv8wJ14NhdWsPtMj8fpKgBQ4HqmDJnVopuIma8Eq8mUuVds0BHfBCS6VdNFkxhxjaDBN07clhGrMYzkZrmvSJ+9D6ZdJZ5l32+dDZTUrpMKoNbJdkQd4spHZvwBPbw==
+2025-01-10 12:48:08,583 - ERROR - Пользователь с именем username не найден
+2025-01-10 12:48:08,585 - ERROR - Ошибка при обработке запроса загрузки лицензии для username: 404: Пользователь не найден
+2025-01-10 12:49:59,905 - ERROR - Пользователь с именем ячсми не найден
+2025-01-10 12:49:59,905 - ERROR - Ошибка при обработке запроса загрузки лицензии для ячсми: 404: Пользователь не найден
+2025-01-10 12:50:07,438 - INFO - Данные лицензии для пользователя zxcvb: USER:12;LICENSE:3093a451-5afe-417f-af33-3bbcf7ad0719
+2025-01-10 12:50:07,500 - INFO - Содержимое файла лицензии для zxcvb: USER:12;LICENSE:3093a451-5afe-417f-af33-3bbcf7ad0719
+XaHYusgWnmnTTZDIZWi9JXL+Q2kADeclCySdEi3MHLOhY0vPp3OQavGMeVIijJTOGkGpbr6scwmo2CZ/wOLYgtUssCy/lwTYzFxpwp8HfhGVoPe2/znx6vmASBzXtKWSmIAf110Z0dlDzOyCvNiSyaBFHlG1be4ueYaEJdMCPktxThykvVjbeRKzCgvM+lmrAi5KfJP7/I5Q8AnftVpsRF9+Nv8wJ14NhdWsPtMj8fpKgBQ4HqmDJnVopuIma8Eq8mUuVds0BHfBCS6VdNFkxhxjaDBN07clhGrMYzkZrmvSJ+9D6ZdJZ5l32+dDZTUrpMKoNbJdkQd4spHZvwBPbw==
+2025-01-10 12:55:29,199 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/cawa/PycharmProjects/FastAPI_backUp/.venv/lib/python3.12/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-01-10 12:55:29,463 - INFO - Пользователь mnbvc успешно зарегистрирован
+2025-01-10 12:55:54,105 - ERROR - Лицензия не найдена для пользователя mnbvc
+2025-01-10 12:55:54,105 - ERROR - Ошибка при обработке запроса загрузки лицензии для mnbvc: 404: Лицензия не найдена
+2025-01-10 12:56:11,940 - INFO - Данные лицензии для пользователя mnbvc: USER:13;LICENSE:7354327d-1412-4700-9ac6-1b9d4b1f7ef1
+2025-01-10 12:56:12,044 - INFO - Содержимое файла лицензии для mnbvc: USER:13;LICENSE:7354327d-1412-4700-9ac6-1b9d4b1f7ef1
+F0geAQaV+0U7v7kPy8U0wJTWqDKs4+VxYpHMMInkvY0mF159TSkF57q5N4PsvjHMacDto4FKaQfXH5AYhnxasoI5aW297XIf6SkjBFZZUhA9jdTq6O/Slus9Uu28Wycbs1rc7nazv1tQyhd/WclPQfoC96+E2FdsZqH2pECe/c4qoKI9UoGxXC79tMDJdWLz8MvByvKedjOXVXF2Ivfc+Xolb/jsbO1qmB9/zqZllbI9Fmc3uk+kEQGR8XwLq1vLydwBQ18w8denVJor3iDYgiwuLgtFysww8a4Sy6i3wb4xtSlrZ6PdUcPCFgUuiYZBESDdFk6bVc+XkRobOxIdNg==
+2025-01-10 12:57:02,232 - INFO - Данные лицензии: USER:13;LICENSE:7354327d-1412-4700-9ac6-1b9d4b1f7ef1
+2025-01-10 12:57:02,233 - INFO - Подпись: F0geAQaV+0U7v7kPy8U0wJTWqDKs4+VxYpHMMInkvY0mF159TSkF57q5N4PsvjHMacDto4FKaQfXH5AYhnxasoI5aW297XIf6SkjBFZZUhA9jdTq6O/Slus9Uu28Wycbs1rc7nazv1tQyhd/WclPQfoC96+E2FdsZqH2pECe/c4qoKI9UoGxXC79tMDJdWLz8MvByvKedjOXVXF2Ivfc+Xolb/jsbO1qmB9/zqZllbI9Fmc3uk+kEQGR8XwLq1vLydwBQ18w8denVJor3iDYgiwuLgtFysww8a4Sy6i3wb4xtSlrZ6PdUcPCFgUuiYZBESDdFk6bVc+XkRobOxIdNg==
+2025-01-10 12:58:40,465 - INFO - Данные лицензии: USER:13;LICENSE:7354327d-1412-4700-9ac6-1b9d4b1f7ef1
+2025-01-10 12:58:40,465 - INFO - Подпись: F0geAQaV+0U7v7kPy8U0wJTWqDKs4+VxYpHMMInkvY0mF159TSkF57q5N4PsvjHMacDto4FKaQfXH5AYhnxasoI5aW297XIf6SkjBFZZUhA9jdTq6O/Slus9Uu28Wycbs1rc7nazv1tQyhd/WclPQfoC96+E2FdsZqH2pECe/c4qoKI9UoGxXC79tMDJdWLz8MvByvKedjOXVXF2Ivfc+Xolb/jsbO1qmB9/zqZllbI9Fmc3uk+kEQGR8XwLq1vLydwBQ18w8denVJor3iDYgiwuLgtFysww8a4Sy6i3wb4xtSlrZ6PdUcPCFgUuiYZBESDdFk6bVc+XkRobOxIdNg==

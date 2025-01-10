@@ -118,25 +118,88 @@ function loadUsers() {
         })
         .catch(err => console.error('Error loading users:', err));
 }
-function generateLicense() {
-    const username = document.getElementById('license-username').value;
+async function generateLicense() {
+    const inputField = document.getElementById("license-string");
+    const stringValue = inputField.value;
 
-    if (username) {
-        const licenseContent = `License for user: ${username}`;
-        const blob = new Blob([licenseContent], { type: 'application/octet-stream' });
-        const url = URL.createObjectURL(blob);
+    if (!stringValue) {
+        alert("Введите строку перед отправкой запроса.");
+        return;
+    }
 
-        const a = document.createElement('a');
+    try {
+        const response = await fetch("http://127.0.0.1:8000/licenses/generate", {
+            method: "POST",
+            headers: {
+                "accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(stringValue),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(`Ошибка генерации лицензии: ${error.detail || response.statusText}`);
+            return;
+        }
+
+        const data = await response.json();
+        const licenseKey = data.key;
+
+        // Отображение всплывающего окна с ключом лицензии
+        alert(`Ключ лицензии успешно сгенерирован: ${licenseKey}`);
+    } catch (error) {
+        console.error("Ошибка генерации лицензии:", error);
+        alert("Не удалось сгенерировать лицензию. Проверьте настройки сервера.");
+    }
+}
+
+
+async function downloadLicense() {
+    const usernameField = document.getElementById("license-username");
+    const username = usernameField.value;
+
+    if (!username) {
+        alert("Введите имя пользователя перед загрузкой лицензии.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/licenses/download?username=${encodeURIComponent(username)}`, {
+            method: "GET",
+            headers: {
+                "accept": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status === 500) {
+                alert("Пожалуйста, сначала сгенерируйте лицензию.");
+            } else {
+                alert(`Ошибка загрузки лицензии: ${response.statusText}`);
+            }
+            return;
+        }
+
+        // Получаем имя файла из заголовков ответа
+        const disposition = response.headers.get("Content-Disposition");
+        const filename = disposition ? disposition.split("filename=")[1] : `license_${username}.lic`;
+
+        // Скачиваем файл
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `${username}-license.exe`;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(url);
 
-        alert('License generated and downloaded!');
-    } else {
-        alert('Please enter a username');
+        alert("Лицензия успешно загружена.");
+    } catch (error) {
+        console.error("Ошибка загрузки лицензии:", error);
+        alert("Не удалось загрузить лицензию. Проверьте настройки сервера.");
     }
 }
 

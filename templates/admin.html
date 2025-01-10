@@ -39,8 +39,17 @@
     <input type="text" id="license-username" placeholder="Введите имя пользователя">
 
     <div class="license-actions">
-        <button onclick="generateLicense()">Сгенерировать и скачать лицензию</button>
-        <button onclick="generateLicense()">Скачать лицензию</button>
+        <div id="license-page" class="dashboard">
+    <h2>Управление лицензией</h2>
+
+    <label for="license-string">Введите строку:</label>
+    <input type="text" id="license-string" placeholder="Введите строку">
+
+    <div class="license-actions">
+        <button onclick="generateLicense()">Сгенерировать лицензию</button>
+    </div>
+</div>
+                <button onclick="downloadLicense()">Скачать лицензию</button>
         <button id="activate-license">Активировать лицензию</button>
         <button id="close-license">Закрыть</button>
     </div>
